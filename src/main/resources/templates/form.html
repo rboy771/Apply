@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${formTitle} + ' | Apply'">Form | Apply</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: 700; letter-spacing: 0.05em; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/applications}">
+            <i class="bi bi-briefcase-fill me-1"></i>Apply
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/applications}">
+                        <i class="bi bi-list-ul me-1"></i>My Applications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/applications/new}">
+                        <i class="bi bi-plus-circle me-1"></i>Add Application
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/applications}">Applications</a>
+                    </li>
+                    <li class="breadcrumb-item active" th:text="${formTitle}"></li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-briefcase me-2"></i>
+                        <span th:text="${formTitle}">Job Application</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- Determine form action based on whether editing or adding -->
+                    <form th:action="${application.id != null}
+                            ? @{/applications/{id}/edit(id=${application.id})}
+                            : @{/applications/new}"
+                          th:object="${application}"
+                          method="post"
+                          novalidate>
+
+                        <div class="row g-3">
+
+                            <!-- Company -->
+                            <div class="col-md-6">
+                                <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control"
+                                       th:classappend="${#fields.hasErrors('company')} ? 'is-invalid'"
+                                       id="company" th:field="*{company}"
+                                       placeholder="e.g. Google"/>
+                                <div class="invalid-feedback" th:errors="*{company}"></div>
+                            </div>
+
+                            <!-- Position -->
+                            <div class="col-md-6">
+                                <label for="position" class="form-label">Position <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control"
+                                       th:classappend="${#fields.hasErrors('position')} ? 'is-invalid'"
+                                       id="position" th:field="*{position}"
+                                       placeholder="e.g. Software Engineer Intern"/>
+                                <div class="invalid-feedback" th:errors="*{position}"></div>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control"
+                                       id="location" th:field="*{location}"
+                                       placeholder="e.g. Remote, San Francisco, CA"/>
+                            </div>
+
+                            <!-- Date Applied -->
+                            <div class="col-md-3">
+                                <label for="dateApplied" class="form-label">Date Applied <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control"
+                                       th:classappend="${#fields.hasErrors('dateApplied')} ? 'is-invalid'"
+                                       id="dateApplied" th:field="*{dateApplied}"/>
+                                <div class="invalid-feedback" th:errors="*{dateApplied}"></div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-md-3">
+                                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                <select class="form-select"
+                                        th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'"
+                                        id="status" th:field="*{status}">
+                                    <option value="">Select status...</option>
+                                    <option th:each="s : ${statuses}"
+                                            th:value="${s.name()}"
+                                            th:text="${s.displayName}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:errors="*{status}"></div>
+                            </div>
+
+                            <!-- Job URL -->
+                            <div class="col-12">
+                                <label for="jobUrl" class="form-label">Job Posting URL</label>
+                                <input type="url" class="form-control"
+                                       id="jobUrl" th:field="*{jobUrl}"
+                                       placeholder="https://careers.company.com/job/..."/>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="col-12">
+                                <label for="notes" class="form-label">Notes</label>
+                                <textarea class="form-control" id="notes" th:field="*{notes}"
+                                          rows="4"
+                                          placeholder="Recruiter contact, interview notes, follow-up actions..."></textarea>
+                            </div>
+
+                        </div><!-- /row -->
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a th:href="@{/applications}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>Save
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div><!-- /card-body -->
+            </div><!-- /card -->
+
+        </div><!-- /col -->
+    </div><!-- /row -->
+</div><!-- /container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmgAlAHsM8/2+/Mc0N4l0G5K13f8"
+        crossorigin="anonymous"></script>
+</body>
+</html>
