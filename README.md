@@ -17,8 +17,9 @@ A Spring Boot web application for tracking job applications, built with:
 
 ## Prerequisites
 - Java 17+
-- Maven 3.9+
 - MariaDB (or MySQL) running locally
+
+> Note: the Gradle wrapper is committed, so you do not need a separate Gradle installation.
 
 ## Setup
 
@@ -35,19 +36,35 @@ Edit `src/main/resources/application.properties` to match your MariaDB host/user
 
 ### 3. Run the application
 ```bash
-mvn spring-boot:run
+./gradlew bootRun
+```
+
+On Windows PowerShell:
+```powershell
+.\gradlew.bat bootRun
 ```
 
 Navigate to <http://localhost:8080>.
 
 ## Running Tests
 ```bash
-mvn test
+./gradlew test
 ```
+
+On Windows PowerShell:
+```powershell
+.\gradlew.bat test
+```
+
 Tests use an H2 in-memory database — no external database required.
 
 ## Build
 ```bash
-mvn package
-java -jar target/apply-0.0.1-SNAPSHOT.jar
+./gradlew build
+java -jar build/libs/apply-0.0.1-SNAPSHOT.jar
+```
+
+On Windows PowerShell:
+```powershell
+.\gradlew.bat build
 ```
