@@ -28,6 +28,10 @@ replay_pid*
 build/
 .gradle/
 
+# Python virtual environment and cache
+.venv/
+__pycache__/
+
 # IDE files
 .idea/
 *.iml
