@@ -40,3 +40,6 @@ __pycache__/
 .project
 .classpath
 *.swp
+
+# AI Assistant files
+.junie/
