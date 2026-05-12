@@ -21,10 +21,9 @@ def fetch_jobs(term, location):
             country = "Canada"
         elif "australia" in loc_lower:
             country = "Australia"
-
-    # Standard JobSpy call based on the repo you provided
+    # Standard JobSpy call based on what i want eg indeed, glassdoor, linkedin etc.
     jobs = scrape_jobs(
-        site_name=["linkedin", "indeed", "glassdoor"],
+        site_name=["linkedin","glassdoor"],
         search_term=term,
         location=location,
         results_wanted=15,
